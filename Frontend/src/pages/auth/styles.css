@@ -1,0 +1,123 @@
+:root {
+  --bg: #fdfcf8;
+  --accent: #9f0505; /* Un naranja eléctrico vibrante */
+  --dark: #1a1a1a;
+  --border: 3px solid #1a1a1a;
+  --shadow: 8px 8px 0px #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+  background-size: 32px 32px; /* Fondo de puntos tipo ingeniería */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* El contenedor principal estilo Bento */
+.bento-card {
+  background: white;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+  transform: rotate(-1deg); /* Ligera inclinación para romper la simetría de IA */
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--dark);
+}
+
+h2 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -1px;
+  font-size: 1.8rem;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+input {
+  padding: 12px;
+  border: var(--border);
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+input:focus {
+  box-shadow: 4px 4px 0px var(--accent);
+  transform: translate(-2px, -2px);
+}
+
+.btn-main {
+  width: 100%;
+  padding: 15px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  transition: 0.1s;
+}
+
+.btn-main:hover {
+  background: var(--accent);
+  color: var(--dark);
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0px var(--dark);
+}
+
+/* Elemento decorativo de fondo */
+.deco-blob {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: var(--accent);
+  border: var(--border);
+  top: 10%;
+  right: -50px;
+  z-index: 1;
+  filter: blur(80px);
+  opacity: 0.4;
+}

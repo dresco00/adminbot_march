@@ -3,25 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AdminBot</title>
+    <title>AdminBot | Entry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles.css" />
-    <!--Estilos globales-->
-    <link rel="stylesheet" href="../../shared/css/main.css" />
   </head>
   <body>
-    <main>
-      <div id="back-img"></div>
+    <main class="dashboard-wrapper">
+      <div id="back-img" class="deco-blob"></div>
 
-      <div id="login">
-        <form>
-          <h2>Login</h2>
-          <label for="email">Email</label>
-          <input type="text" id="email" />
-          <label for="password">Password</label>
-          <input type="text" id="password" />
-          <button>sign in</button>
+      <div id="login" class="bento-card">
+        <form class="login-form">
+          <div class="form-header">
+            <span class="status-dot"></span>
+            <h2>AdminBot</h2>
+          </div>
+          
+          <div class="input-group">
+            <label for="email">User Email</label>
+            <input type="text" id="email" placeholder="name@system.com" />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Access Code</label>
+            <input type="password" id="password" placeholder="••••••••" />
+          </div>
+
+          <button type="submit" class="btn-main">
+            Authorize <span>→</span>
+          </button>
         </form>
       </div>
     </main>
+    <script src="./auth.js"></script>
   </body>
 </html>
