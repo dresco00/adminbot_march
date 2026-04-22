@@ -1,13 +1,36 @@
-import mysql2 from 'mysql2/promise';
-import dotenv from "dotenv"
+import sqlite3 from 'sqlite3'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-dotenv.config()
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const dbPath = path.join(__dirname, '../adminbot.db')
 
-const db = mysql2.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+const sqlite = sqlite3.verbose()
+const database = new sqlite.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Error opening database:', err.message)
+  } else {
+    console.log('Connected to SQLite database at:', dbPath)
+  }
+})
 
-export default db;
+// Wrap database methods to return promises
+const db = {
+  query: (sql, params = []) => {
+    return new Promise((resolve, reject) => {
+      if (sql.trim().toUpperCase().startsWith('SELECT')) {
+        database.all(sql, params, (err, rows) => {
+          if (err) reject(err)
+          else resolve([rows || []])
+        })
+      } else {
+        database.run(sql, params, function(err) {
+          if (err) reject(err)
+          else resolve([{ lastID: this.lastID, changes: this.changes }])
+        })
+      }
+    })
+  }
+}
+
+export default db

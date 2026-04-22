@@ -35,8 +35,9 @@ export const login = async (req,res)=>{
             message:"Login exitoso",
             user: {
                 id: user.id,
-                name: user.nombres,
-                email: user.email
+                name: `${user.first_name} ${user.last_name}`,
+                email: user.email,
+                role: user.role
             }
         })
     }

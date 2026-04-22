@@ -8,9 +8,18 @@ import usuarioRoutes from './routes/usuarios.route.js';
 import asistenciaRoutes from './routes/asistencias.route.js';
 import notificacionRoutes from './routes/notificaciones.route.js';
 import authRoutes from "./routes/auth.route.js"
+import dashboardRoutes from "./routes/dashboard.route.js"
 
 const app = express();
 app.use(express.json())
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200)
+  }
+  next()
+})
 const PORT = 3000
 //Rutas
 app.use('/api', studenRoutes);
@@ -20,6 +29,7 @@ app.use('/api', usuarioRoutes);
 app.use('/api', asistenciaRoutes);
 app.use('/api', notificacionRoutes);
 app.use("/api",authRoutes)
+app.use("/api",dashboardRoutes)
 
 //ruta base
 app.get("/", (req, res)=>{
