@@ -1,3 +1,5 @@
+/* Estilos para Students, similares al Dashboard */
+
 :root {
   --bg: #fdfcf8;
   --accent: #760909;
@@ -28,42 +30,71 @@ body {
   padding: 40px 20px;
 }
 
-.dashboard-main {
+.students-main {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   z-index: 2;
 }
 
-.dashboard-header {
+.students-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
+  align-items: center;
+  margin-bottom: 30px;
   background: white;
   border: var(--border);
   padding: 25px;
   box-shadow: var(--shadow);
 }
 
-.dashboard-header h2 {
+.students-header h2 {
   font-size: 2.5rem;
   line-height: 1;
   text-transform: uppercase;
 }
 
-.dashboard-copy {
+.students-copy {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
-.user-name {
-  color: var(--accent);
-  text-decoration: underline;
+.btn-secondary {
+  background: white;
+  color: var(--dark);
+  border: var(--border);
+  padding: 10px 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.1s;
 }
 
-.logout-button {
+.btn-secondary:hover {
+  box-shadow: 4px 4px 0px var(--dark);
+  transform: translate(-2px, -2px);
+}
+
+.toolbar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 10px;
+  border: var(--border);
+  width: 300px;
+}
+
+select {
+  padding: 10px;
+  border: var(--border);
+}
+
+.btn-main {
   background: var(--accent);
   color: white;
   border: var(--border);
@@ -74,66 +105,44 @@ body {
   transition: 0.1s;
 }
 
-.logout-button:hover {
+.btn-main:hover {
   box-shadow: 4px 4px 0px var(--dark);
   transform: translate(-2px, -2px);
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-.dashboard-card {
+.table-container {
   background: white;
   border: var(--border);
-  padding: 30px;
-  box-shadow: 6px 6px 0px var(--dark);
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  display: flex;
-  flex-direction: column;
-  min-height: 220px;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
 }
 
-/* Tarjeta de Resumen Especial */
-@media (min-width: 768px) {
-  .summary-card {
-    grid-column: span 2;
-    flex-direction: row;
-    gap: 30px;
-    align-items: center;
-  }
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.card-info { flex: 1; }
+.students-table th,
+.students-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
 
-.chart-container {
-  flex: 1.5;
-  height: 200px;
+.students-table th {
   background: #f9f9f9;
-  border: 2px solid var(--dark);
-  padding: 10px;
-}
-
-.dashboard-card h3 {
-  font-size: 1.5rem;
+  font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 15px;
-  border-bottom: 2px solid var(--dark);
-  display: inline-block;
 }
 
-.dashboard-card p {
-  font-size: 1rem;
-  line-height: 1.4;
-  color: #444;
+.empty-state {
+  text-align: center;
+  padding: 50px;
 }
 
-.dashboard-card:hover {
-  transform: scale(1.01) rotate(0deg) !important;
-  box-shadow: 12px 12px 0px var(--accent);
-  border-color: var(--accent);
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
 }
 
 .deco-blob {

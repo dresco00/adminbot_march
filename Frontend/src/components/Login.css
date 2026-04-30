@@ -1,0 +1,147 @@
+:root {
+  --bg: #fdfcf8;
+  --accent: #760909;
+  --secondary: #00ff41;
+  --dark: #1a1a1a;
+  --border: 3px solid #1a1a1a;
+  --shadow: 8px 8px 0px #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+  background-size: 32px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.dashboard-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.bento-card {
+  background: white;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+  transform: rotate(-1deg);
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  border: 2px solid var(--dark);
+}
+
+h2 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: -1px;
+  font-size: 1.8rem;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+input {
+  padding: 12px;
+  border: var(--border);
+  font-size: 1rem;
+  outline: none;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+input:focus {
+  box-shadow: 4px 4px 0px var(--accent);
+  transform: translate(-2px, -2px);
+}
+
+.btn-main {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: white;
+  border: var(--border);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.btn-main:hover {
+  box-shadow: 4px 4px 0px var(--dark);
+  transform: translate(-2px, -2px);
+}
+
+.btn-main:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 20px;
+  min-height: 20px;
+}
+
+.deco-blob {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 200px;
+  height: 200px;
+  background: var(--secondary);
+  border-radius: 50%;
+  opacity: 0.1;
+  z-index: 1;
+}

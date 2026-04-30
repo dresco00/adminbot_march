@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import bcrypt from "bcrypt"
 
 import studenRoutes from './routes/students.route.js';
@@ -11,6 +13,10 @@ import authRoutes from "./routes/auth.route.js"
 import dashboardRoutes from "./routes/dashboard.route.js"
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use(express.json())
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
@@ -33,7 +39,14 @@ app.use("/api",dashboardRoutes)
 
 //ruta base
 app.get("/", (req, res)=>{
-    res.send("Api funcionando")
+    res.sendFile(path.join(__dirname, '../Frontend/index.html'))
+})
+
+app.use((req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ message: 'Ruta API no encontrada' })
+  }
+  res.status(404).sendFile(path.join(__dirname, '../Frontend/404.html'))
 })
 
 // const passwordlist = [

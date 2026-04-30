@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error 404 | AdminBot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --bg: #fdfcf8;
+        --accent: #760909; /* Tu color granate */
+        --dark: #1a1a1a;
+        --border: 3px solid #1a1a1a;
+        --shadow: 8px 8px 0px #1a1a1a;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+
+      body {
+        background-color: var(--bg);
+        background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+        background-size: 32px 32px; /* Fondo de puntos del login/dashboard */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Contenedor decorativo de fondo */
+      .deco-blob {
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        background: var(--accent);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        filter: blur(100px);
+        opacity: 0.15;
+        z-index: 0;
+      }
+
+      .page-404 {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 60px 40px;
+        max-width: 500px;
+        width: 90%;
+        background: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        transform: rotate(-1.5deg); /* Inclinación característica */
+      }
+
+      .page-404 h1 {
+        font-size: 8rem; /* Tamaño masivo para impacto */
+        font-weight: 700;
+        color: var(--dark);
+        line-height: 0.8;
+        margin-bottom: 1rem;
+        letter-spacing: -5px;
+      }
+
+      /* Detalle visual de "glitch" o alerta */
+      .status-line {
+        height: 15px;
+        background: var(--accent);
+        border: var(--border);
+        margin: 0 auto 2rem;
+        width: 100px;
+      }
+
+      .page-404 p {
+        margin-bottom: 2.5rem;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--dark);
+        text-transform: uppercase;
+        line-height: 1.4;
+      }
+
+      .btn-back {
+        background: var(--dark);
+        color: #fff;
+        border: var(--border);
+        padding: 15px 30px;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: 0.1s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn-back:hover {
+        background: var(--accent);
+        color: var(--dark);
+        transform: translate(-4px, -4px);
+        box-shadow: 4px 4px 0px var(--dark);
+      }
+
+      .btn-back span {
+        font-size: 1.2rem;
+      }
+
+      /* Animación simple de flotación */
+      @keyframes float {
+        0% { transform: rotate(-1.5deg) translateY(0px); }
+        50% { transform: rotate(-1.5deg) translateY(-10px); }
+        100% { transform: rotate(-1.5deg) translateY(0px); }
+      }
+
+      .page-404 {
+        animation: float 4s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="deco-blob"></div>
+
+    <main class="page-404">
+      <h1>404</h1>
+      <div class="status-line"></div>
+      <p>Error de Sistema:<br />La ruta solicitada no se encuentra en el servidor.</p>
+      
+      <button type="button" class="btn-back" onclick="window.location.href='/'">
+        <span>←</span> Volver al Login
+      </button>
+    </main>
+  </body>
+</html>

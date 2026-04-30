@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AdminBot | Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../styles.css" />
     <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <main class="dashboard-wrapper">
@@ -22,24 +23,29 @@
         </div>
 
         <div class="dashboard-grid">
-          <article class="dashboard-card">
-            <h3>Resumen</h3>
-            <p>Accede rápidamente a las métricas de asistencia, pagos y usuarios.</p>
+          <article class="dashboard-card summary-card">
+            <div class="card-info">
+              <h3>Resumen</h3>
+              <p id="totalStudentsText">Cargando métricas...</p>
+            </div>
+            <div class="chart-container">
+              <canvas id="summaryChart"></canvas>
+            </div>
           </article>
 
           <article class="dashboard-card">
             <h3>Asistencia</h3>
-            <p>Verifica el estado actual y los informes diarios de asistencia.</p>
+            <p id="absencesText">Verifica el estado actual y los informes diarios de asistencia.</p>
           </article>
 
           <article class="dashboard-card">
             <h3>Pagos</h3>
-            <p>Gestiona facturas, pagos pendientes y registros de transacciones.</p>
+            <p id="paymentsText">Gestiona facturas, pagos pendientes y registros de transacciones.</p>
           </article>
 
           <article class="dashboard-card">
-            <h3>Usuarios</h3>
-            <p>Revisa el listado de usuarios administradores, docentes y coordinadores.</p>
+            <h3>Estudiantes</h3>
+            <p>Gestiona el listado de estudiantes, filtra por grado y agrega nuevos estudiantes.</p>
           </article>
         </div>
       </section>
