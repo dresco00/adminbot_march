@@ -1,7 +1,12 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+// En ESM no existe __dirname al inicio del archivo.
+// Calculamos la ruta base usando import.meta.url.
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 import studenRoutes from './routes/students.route.js';
 import acudienteRoutes from './routes/acudientes.route.js';
@@ -11,16 +16,16 @@ import asistenciaRoutes from './routes/asistencias.route.js';
 import notificacionRoutes from './routes/notificaciones.route.js';
 import authRoutes from "./routes/auth.route.js"
 import dashboardRoutes from "./routes/dashboard.route.js"
+import whatsappRoutes from "./modules/whatsapp.routes.js"
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use(express.json())
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200)
   }
@@ -36,9 +41,19 @@ app.use('/api', asistenciaRoutes);
 app.use('/api', notificacionRoutes);
 app.use("/api",authRoutes)
 app.use("/api",dashboardRoutes)
+app.use("/api",whatsappRoutes)
 
 //ruta base
 app.get("/", (req, res)=>{
+    res.sendFile(path.join(__dirname, '../Frontend/index.html'))
+})
+
+// Serve frontend pages
+app.get("/dashboard", (req, res)=>{
+    res.sendFile(path.join(__dirname, '../Frontend/src/pages/auth/dashboard/index.html'))
+})
+
+app.get("/index.html", (req, res)=>{
     res.sendFile(path.join(__dirname, '../Frontend/index.html'))
 })
 

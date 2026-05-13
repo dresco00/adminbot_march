@@ -20,7 +20,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 3. Función para crear la gráfica Neo-Brutalista
     const initChart = (dataValues = [0, 0, 0, 0, 0, 0]) => {
-        const ctx = document.getElementById('summaryChart').getContext('2d');
+        const canvas = document.getElementById('summaryChart');
+        if (!canvas) {
+            console.error('Canvas element not found');
+            return;
+        }
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+            console.error('Could not get canvas context');
+            return;
+        }
         summaryChart = new Chart(ctx, {
             type: 'bar',
             data: {

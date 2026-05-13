@@ -1,91 +1,179 @@
-import { obtenerUsuario } from "../../shared/js/storage.js"
-import { request } from "../../shared/js/api.js"
+const addStudentBtn = document.getElementById('addStudentBtn');
+const addStudentBtnEmpty = document.getElementById('addStudentBtnEmpty');
+const backButton = document.getElementById('backButton');
+const modal = document.getElementById('studentModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const studentForm = document.getElementById('studentForm');
+const modalTitle = document.getElementById('modalTitle');
+const filterInput = document.getElementById('filterInput');
+const gradeFilter = document.getElementById('gradeFilter');
 
-const user = obtenerUsuario()
-if (!user) window.location.href = '/index.html'
+let editingId = null;
 
-let allStudents = []
-
-const elements = {
-    modal: document.getElementById('studentModal'),
-    form: document.getElementById('studentForm'),
-    filterInput: document.getElementById('filterInput'),
-    gradeFilter: document.getElementById('gradeFilter'),
-    tableBody: document.getElementById('studentsTableBody'),
-    emptyState: document.getElementById('emptyState'),
-    tableContainer: document.querySelector('.table-container')
+function openModal(student = null) {
+  modal.classList.remove('hidden');
+  if (student) {
+    modalTitle.textContent = 'Editar Estudiante';
+    editingId = student.id;
+    studentForm.codigo.value = student.codigo || '';
+    studentForm.nombres.value = student.nombres || '';
+    studentForm.apellidos.value = student.apellidos || '';
+    studentForm.documento.value = student.documento || '';
+    studentForm.grado.value = student.grado || '1';
+    studentForm.anio.value = student.anio || '';
+    studentForm.asistencia.value = student.asistencia || 0;
+    studentForm.notas.value = student.notas || 0;
+    studentForm.actividades.value = student.actividades || 0;
+    studentForm.participacion.value = student.participacion || 0;
+  } else {
+    modalTitle.textContent = 'Nuevo Estudiante';
+    editingId = null;
+    studentForm.reset();
+    studentForm.asistencia.value = 0;
+    studentForm.notas.value = 0;
+    studentForm.actividades.value = 0;
+    studentForm.participacion.value = 0;
+  }
 }
 
-const renderStudents = (students) => {
-    if (students.length === 0) {
-        elements.tableContainer.classList.add('hidden')
-        elements.emptyState.classList.remove('hidden')
-        return
+function closeModal() {
+  modal.classList.add('hidden');
+}
+
+const API_BASE = 'http://localhost:3000/api';
+
+async function submitStudent(event) {
+  event.preventDefault();
+
+  const asistenciaVal = Number(studentForm.asistencia.value) || 0;
+  const notasVal = Number(studentForm.notas.value) || 0;
+  const actividadesVal = Number(studentForm.actividades.value) || 0;
+  const participacionVal = Number(studentForm.participacion.value) || 0;
+
+  const payload = {
+    codigo: studentForm.codigo.value.trim(),
+    nombres: studentForm.nombres.value.trim(),
+    apellidos: studentForm.apellidos.value.trim(),
+    documento: studentForm.documento.value.trim(),
+    grado: studentForm.grado.value,
+    anio: studentForm.anio.value.trim(),
+    asistencia: asistenciaVal,
+    notas: notasVal,
+    actividades: actividadesVal,
+    participacion: participacionVal,
+  };
+
+  try {
+    const method = editingId ? 'PUT' : 'POST';
+    const url = editingId ? `${API_BASE}/students/${editingId}` : `${API_BASE}/students`;
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || data.error || 'Ocurrió un error al guardar el estudiante.');
+      return;
     }
 
-    elements.tableContainer.classList.remove('hidden')
-    elements.emptyState.classList.add('hidden')
-
-    elements.tableBody.innerHTML = students.map((s, i) => `
-        <tr style="animation: slideIn 0.3s ease forwards ${i * 0.05}s; opacity: 0;">
-            <td><strong>${s.codigo_estudiante || '-'}</strong></td>
-            <td>${s.nombres}</td>
-            <td>${s.apellidos}</td>
-            <td>${s.numero_documento}</td>
-            <td><span class="badge">Grado ${s.grado}</span></td>
-            <td>${s.anio_lectivo}</td>
-            <td>
-                <button class="btn-action edit-btn" data-id="${s.id}">Edit</button>
-                <button class="btn-action delete-btn" data-id="${s.id}">Del</button>
-            </td>
-        </tr>
-    `).join('')
+    window.location.reload();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error de conexión. Verifica que el servidor esté corriendo.');
+  }
 }
 
-const filterData = () => {
-    const search = elements.filterInput.value.toLowerCase()
-    const grade = elements.gradeFilter.value
-    
-    const filtered = allStudents.filter(s => {
-        const matchSearch = Object.values(s).some(v => String(v).toLowerCase().includes(search))
-        const matchGrade = grade === '' || s.grado == grade
-        return matchSearch && matchGrade
-    })
-    renderStudents(filtered)
-}
+async function deleteStudent(studentId) {
+  if (!confirm('¿Deseas eliminar este estudiante?')) {
+    return;
+  }
 
-const loadStudents = async () => {
-    try {
-        elements.tableBody.innerHTML = '<tr><td colspan="7">Sincronizando base de datos...</td></tr>'
-        const data = await request('/student')
-        allStudents = Array.isArray(data) ? data : data.data || []
-        renderStudents(allStudents)
-    } catch (error) {
-        elements.tableBody.innerHTML = '<tr><td colspan="7" style="color:red">Error de conexión con el servidor</td></tr>'
+  try {
+    const response = await fetch(`${API_BASE}/students/${studentId}`, {
+      method: 'DELETE',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || data.error || 'No se pudo eliminar el estudiante.');
+      return;
     }
+
+    window.location.reload();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error de conexión. Verifica que el servidor esté corriendo.');
+  }
 }
 
-// Eventos
-document.getElementById('addStudentBtn').onclick = () => elements.modal.classList.remove('hidden')
-document.getElementById('closeModalBtn').onclick = () => elements.modal.classList.add('hidden')
-elements.filterInput.oninput = filterData
-elements.gradeFilter.onchange = filterData
+function attachRowActions() {
+  document.querySelectorAll('.editBtn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const student = JSON.parse(button.dataset.student);
+      openModal(student);
+    });
+  });
 
-elements.form.onsubmit = async (e) => {
-    e.preventDefault()
-    const btn = e.target.querySelector('button[type="submit"]')
-    btn.innerText = 'Guardando...'
-    
-    try {
-        const payload = Object.fromEntries(new FormData(e.target))
-        await request('/student', { method: 'POST', body: JSON.stringify(payload) })
-        elements.modal.classList.add('hidden')
-        loadStudents()
-    } catch (error) {
-        alert('Error: ' + error.message)
-    } finally {
-        btn.innerText = 'Guardar Registro'
-    }
+  document.querySelectorAll('.deleteBtn').forEach((button) => {
+    button.addEventListener('click', () => {
+      deleteStudent(button.dataset.id);
+    });
+  });
 }
 
-document.addEventListener('DOMContentLoaded', loadStudents)
+function filterTable() {
+  const searchTerm = filterInput.value.toLowerCase();
+  const gradeValue = gradeFilter.value;
+
+  document.querySelectorAll('#studentsTableBody tr').forEach((row) => {
+    const values = Array.from(row.querySelectorAll('td')).map((cell) => cell.textContent.toLowerCase());
+    const matchesSearch = values.some((value) => value.includes(searchTerm));
+    const gradeCell = row.querySelector('td:nth-child(5)').textContent;
+    const matchesGrade = !gradeValue || gradeCell === gradeValue;
+    row.style.display = matchesSearch && matchesGrade ? '' : 'none';
+  });
+}
+
+if (addStudentBtn) {
+  addStudentBtn.addEventListener('click', () => openModal());
+}
+
+if (addStudentBtnEmpty) {
+  addStudentBtnEmpty.addEventListener('click', () => openModal());
+}
+
+if (backButton) {
+  backButton.addEventListener('click', () => {
+    window.location.href = '/dashboard';
+  });
+}
+
+if (closeModalBtn) {
+  closeModalBtn.addEventListener('click', closeModal);
+}
+
+if (cancelBtn) {
+  cancelBtn.addEventListener('click', closeModal);
+}
+
+if (studentForm) {
+  studentForm.addEventListener('submit', submitStudent);
+}
+
+if (filterInput) {
+  filterInput.addEventListener('input', filterTable);
+}
+
+if (gradeFilter) {
+  gradeFilter.addEventListener('change', filterTable);
+}
+
+attachRowActions();

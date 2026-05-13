@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AdminBot | Estudiantes</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="{{ url_for('students_assets', filename='style.css') }}" />
 </head>
 <body>
   <main class="dashboard-wrapper">
@@ -29,16 +29,14 @@
         </div>
         <select id="gradeFilter">
           <option value="">Todos los grados</option>
-          <option value="1">Grado 1</option><option value="2">Grado 2</option>
-          <option value="3">Grado 3</option><option value="4">Grado 4</option>
-          <option value="5">Grado 5</option><option value="6">Grado 6</option>
-          <option value="7">Grado 7</option><option value="8">Grado 8</option>
-          <option value="9">Grado 9</option><option value="10">Grado 10</option>
-          <option value="11">Grado 11</option>
+          {% for number in range(1, 12) %}
+          <option value="{{ number }}">Grado {{ number }}</option>
+          {% endfor %}
         </select>
         <button id="addStudentBtn" class="btn-main">+ Agregar Estudiante</button>
       </div>
 
+      {% if students %}
       <div class="table-container">
         <table class="students-table">
           <thead>
@@ -49,19 +47,44 @@
               <th>Documento</th>
               <th>Grado</th>
               <th>Año</th>
+              <th>Asistencia</th>
+              <th>Notas</th>
+              <th>Actividades</th>
+              <th>Participación</th>
+              <th>Certificación</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody id="studentsTableBody">
-            </tbody>
+            {% for student in students %}
+            <tr data-id="{{ student.id }}">
+              <td>{{ student.codigo }}</td>
+              <td>{{ student.nombres }}</td>
+              <td>{{ student.apellidos }}</td>
+              <td>{{ student.documento }}</td>
+              <td>{{ student.grado }}</td>
+              <td>{{ student.anio }}</td>
+              <td>{{ student.asistencia }}%</td>
+              <td>{{ '%.2f'|format(student.notas) }}</td>
+              <td>{{ student.actividades }}%</td>
+              <td>{{ student.participacion }}%</td>
+              <td>{{ 'Certificable' if certificable(student) else 'No certificable' }}</td>
+              <td>
+                <button type="button" class="editBtn" data-student='{{ student|tojson|safe }}'>Editar</button>
+                <button type="button" class="deleteBtn" data-id="{{ student.id }}">Eliminar</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
-
-      <div id="emptyState" class="empty-state hidden">
+      {% else %}
+      <div class="empty-state">
         <div class="empty-icon">!</div>
         <p>No se encontraron registros en el sistema</p>
         <button id="addStudentBtnEmpty" class="btn-main">+ Crear primer registro</button>
       </div>
+      {% endif %}
     </section>
 
     <div id="studentModal" class="modal hidden">
@@ -107,6 +130,6 @@
       </div>
     </div>
   </main>
-  <script type="module" src="./students.js"></script>
+  <script src="{{ url_for('students_assets', filename='students.js') }}"></script>
 </body>
 </html>

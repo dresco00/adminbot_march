@@ -52,25 +52,26 @@ const db = new sqlite3.Database(dbPath, async (err) => {
     else console.log('✓ Table guardians created/exists')
   })
 
-  // Create students table
+  // Create students table (with academic metrics)
   db.run(`
-    CREATE TABLE IF NOT EXISTS students (
-      id TEXT PRIMARY KEY,
-      student_code TEXT NOT NULL UNIQUE,
-      first_name TEXT NOT NULL,
-      last_name TEXT NOT NULL,
-      document_type TEXT,
-      document_number TEXT UNIQUE,
-      birth_date DATE,
-      grade TEXT,
-      school_year INTEGER,
-      status TEXT NOT NULL DEFAULT 'active',
+    CREATE TABLE IF NOT EXISTS estudiantes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      codigo TEXT NOT NULL UNIQUE,
+      nombres TEXT NOT NULL,
+      apellidos TEXT NOT NULL,
+      documento TEXT NOT NULL UNIQUE,
+      grado TEXT NOT NULL,
+      anio TEXT NOT NULL,
+      asistencia INTEGER NOT NULL DEFAULT 0,
+      notas REAL NOT NULL DEFAULT 0.0,
+      actividades INTEGER NOT NULL DEFAULT 0,
+      participacion INTEGER NOT NULL DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `, (err) => {
-    if (err) console.error('Error creating students table:', err)
-    else console.log('✓ Table students created/exists')
+    if (err) console.error('Error creating estudiantes table:', err)
+    else console.log('✓ Table estudiantes created/exists')
   })
 
   // Create student_guardians table
